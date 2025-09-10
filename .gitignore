@@ -8,4 +8,5 @@
 # Ignoring the build outputs for the cross-platform C++ project
 ImageDisplay_C++_cross_platform/build
 
+*.class
 
