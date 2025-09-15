@@ -75,7 +75,7 @@ public class ImageDisplay {
 		}
 	}
 
-	private double[] rgbToYuv(int r, int g, int b) {
+	public double[] rgbToYuv(int r, int g, int b) {
 		double values[] = {0, 0, 0};
 
 		double red = (double) r;
@@ -209,7 +209,7 @@ public class ImageDisplay {
 
 		BufferedImage image = new BufferedImage(height, width, BufferedImage.TYPE_INT_RGB);
 
-		RGBQuantizer optimizedQuantizer = new KMeansRGBQuantizer();
+		KMeansQuantizer optimizedQuantizer = new KMeansQuantizer(this);
 		for (int y = 0; y < height; y++)
 		{
 			for (int x = 0; x < width; x++)
@@ -220,8 +220,11 @@ public class ImageDisplay {
 				int b = pixel & 0xff;
 				if (optimizedQuantization) {
 					if (colorMode == ColorMode.YUV) {
-						// double[] yuv = rgbToYuv(r, g, b);
-						throw new Error("not implemented");
+						if (!optimizedQuantizer.getIsFit())
+							optimizedQuantizer.fitYUV(img, bits);
+						double yuvPixel[] = optimizedQuantizer.quantizeYUV(rgbToYuv(r, g, b));
+						int rgb[] = yuvToRgb(yuvPixel[0], yuvPixel[1], yuvPixel[2]);
+						pixel = (rgb[0] << 16) | (rgb[1] << 8) | rgb[2];
 					}
 					else {
 						if (!optimizedQuantizer.getIsFit())

@@ -4,11 +4,11 @@ import java.util.HashMap;
 import java.util.List;
 
 public class KMeansRGBQuantizer extends RGBQuantizer {
-    List<Double> redClusters;
-    List<Double> greenClusters;
-    List<Double> blueClusters;
+    protected List<Double> redClusters;
+    protected List<Double> greenClusters;
+    protected List<Double> blueClusters;
 
-    private List<Integer> getIndicesForCluster(double clusterValue, HashMap<Integer, Double> indexClusterMap) {
+    protected List<Integer> getIndicesForCluster(double clusterValue, HashMap<Integer, Double> indexClusterMap) {
         List<Integer> indices = new ArrayList<Integer>();
         for (int i = 0; i < indexClusterMap.size(); i++) {
             if (indexClusterMap.get(i) == clusterValue) {
@@ -25,9 +25,6 @@ public class KMeansRGBQuantizer extends RGBQuantizer {
             throw new Error("Must have at least k pixels");
         // Initial set of values to represent each cluster
         List<Double> clusterReps = new ArrayList<Double>();
-        for (int i = 0; i < channel.size(); i++) {
-            System.out.print(channel.get(i));
-        }
         for (int i = 0; i < k; i++) {
             clusterReps.add((double)channel.get(i * (channel.size() / k)));
         }
@@ -54,12 +51,8 @@ public class KMeansRGBQuantizer extends RGBQuantizer {
                 totalChange += Math.abs(clusterReps.get(i) - newCentroid);
                 clusterReps.set(i, newCentroid);
             }
-            willRepeat = totalChange > 5;
+            willRepeat = totalChange > 3;
         }
-        for (int i = 0; i < clusterReps.size(); i++) {
-            System.out.print(clusterReps.get(i) + " ");
-        }
-        System.out.println();
        
 
         return clusterReps;
@@ -99,7 +92,6 @@ public class KMeansRGBQuantizer extends RGBQuantizer {
         int g = (rgb >> 8) & 0xFF;
         int b = rgb & 0xFF;
 
-        // Scale each color component to the new range (0-31)
         int quantizedR = (int) Math.round(findNearestDouble(r, redClusters));
         int quantizedG = (int) Math.round(findNearestDouble(g, greenClusters));
         int quantizedB = (int) Math.round(findNearestDouble(b, blueClusters));

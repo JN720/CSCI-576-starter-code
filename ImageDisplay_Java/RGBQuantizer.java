@@ -31,6 +31,20 @@ public abstract class RGBQuantizer {
         return nearestElement;
     }
 
+    protected double findNearestDouble(double value, List<Double> elements) {
+        double nearestElement = elements.get(0);
+        double bestDistance = Math.abs(value - nearestElement);
+        for (int i = 1; i < elements.size(); i++) {
+            double candidate = elements.get(i);
+            double distance = Math.abs(value - candidate);
+            if (distance < bestDistance) {
+                bestDistance = distance;
+                nearestElement = candidate;
+            }
+        }
+        return nearestElement;
+    }
+
     protected double getRegionCenter(int value, List<Double> elements) {
         int regionStartIndex = -1;
         for (int i = elements.size() - 1; i >= 0; i--) {
