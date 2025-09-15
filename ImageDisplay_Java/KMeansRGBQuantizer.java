@@ -25,6 +25,9 @@ public class KMeansRGBQuantizer extends RGBQuantizer {
             throw new Error("Must have at least k pixels");
         // Initial set of values to represent each cluster
         List<Double> clusterReps = new ArrayList<Double>();
+        for (int i = 0; i < channel.size(); i++) {
+            System.out.print(channel.get(i));
+        }
         for (int i = 0; i < k; i++) {
             clusterReps.add((double)channel.get(i * (channel.size() / k)));
         }
@@ -52,9 +55,12 @@ public class KMeansRGBQuantizer extends RGBQuantizer {
                 clusterReps.set(i, newCentroid);
             }
             willRepeat = totalChange > 5;
-            System.out.println(totalChange);
         }
-        System.out.println("Completed clustering");
+        for (int i = 0; i < clusterReps.size(); i++) {
+            System.out.print(clusterReps.get(i) + " ");
+        }
+        System.out.println();
+       
 
         return clusterReps;
     }
@@ -73,10 +79,10 @@ public class KMeansRGBQuantizer extends RGBQuantizer {
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 int pixel = image.getRGB(x, y);
-                if (!reds.contains(pixel >> 16))
-                    reds.add(pixel >> 16);
-                if (!greens.contains(pixel >> 8))
-                    greens.add(pixel >> 8);
+                if (!reds.contains((pixel >> 16) & 0xFF))
+                    reds.add((pixel >> 16) & 0xFF);
+                if (!greens.contains((pixel >> 8) & 0xFF))
+                    greens.add((pixel >> 8) & 0xFF);
                 if (!blues.contains(pixel & 0xFF))
                     blues.add(pixel & 0xFF);
             }

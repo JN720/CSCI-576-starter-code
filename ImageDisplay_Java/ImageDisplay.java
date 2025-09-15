@@ -209,7 +209,7 @@ public class ImageDisplay {
 
 		BufferedImage image = new BufferedImage(height, width, BufferedImage.TYPE_INT_RGB);
 
-		RGBQuantizer optimizedQuantizer = new MedianRGBQuantizer();
+		RGBQuantizer optimizedQuantizer = new KMeansRGBQuantizer();
 		for (int y = 0; y < height; y++)
 		{
 			for (int x = 0; x < width; x++)
@@ -248,7 +248,13 @@ public class ImageDisplay {
 						pixel = uniformQuantizeRGB(new int[] {r, g, b}, bits);
 					}
 				}
-				image.setRGB(x, y, pixel);
+				try {
+					image.setRGB(x, y, pixel);
+				} catch (Exception e) {
+					System.out.println(e.getMessage());
+					System.out.println(x + " " + y);
+					System.exit(0);
+				}
 				
 			}
 		}
