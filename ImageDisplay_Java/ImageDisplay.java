@@ -10,7 +10,6 @@ enum ColorMode {
 }
 
 public class ImageDisplay {
-
 	JFrame frame;
 	JLabel lbIm1;
 	JLabel lbIm2;
@@ -25,7 +24,7 @@ public class ImageDisplay {
 	/** Read Image RGB
 	 *  Reads the image of given width and height at the given imgPath into the provided BufferedImage.
 	 */
-	private void readImageRGB(int width, int height, String imgPath, BufferedImage img)
+	public void readImageRGB(int width, int height, String imgPath, BufferedImage img)
 	{
 		RandomAccessFile raf = null;
 		try
@@ -159,26 +158,27 @@ public class ImageDisplay {
 			double fullRange = maxs[i] - mins[i];
 			double spaceSize = 1 << (bits[i]);
 			double rangeSize = fullRange / spaceSize;
-			double rangeBottom = values[i] - (values[i] % rangeSize);
+			// The extra addition ensures there's no shenanigans with a negative modulo
+			double rangeBottom = values[i] - ((values[i] + fullRange) % rangeSize);
 			double rangeCenter = rangeBottom + (rangeSize / 2);
-			if (Math.random() > 0.99) {
-				System.out.print("original ");
-				System.out.println(values[i]);
-				System.out.print("full range ");
-				System.out.print(mins[i]);
-				System.out.print(" - ");
-				System.out.println(maxs[i]);
-				System.out.println(fullRange);
-				System.out.print("space size ");
-				System.out.println(spaceSize);
-				System.out.print("range size ");
-				System.out.println(rangeSize);
-				System.out.print("range bottom ");
-				System.out.println(rangeBottom);
-				System.out.print("range center ");
-				System.out.println(rangeCenter);
-				System.out.println();
-			}
+			// if (Math.random() > 0.99) {
+			// 	System.out.print("original ");
+			// 	System.out.println(values[i]);
+			// 	System.out.print("full range ");
+			// 	System.out.print(mins[i]);
+			// 	System.out.print(" - ");
+			// 	System.out.println(maxs[i]);
+			// 	System.out.println(fullRange);
+			// 	System.out.print("space size ");
+			// 	System.out.println(spaceSize);
+			// 	System.out.print("range size ");
+			// 	System.out.println(rangeSize);
+			// 	System.out.print("range bottom ");
+			// 	System.out.println(rangeBottom);
+			// 	System.out.print("range center ");
+			// 	System.out.println(rangeCenter);
+			// 	System.out.println();
+			// }
 			newValues[i] = rangeCenter;
 		}
 
@@ -186,7 +186,7 @@ public class ImageDisplay {
 		return newValues;
 	}
 
-	private BufferedImage modifyImage(BufferedImage img, String[] args)
+	public BufferedImage modifyImage(BufferedImage img, String[] args)
 	{
 		int width = img.getWidth();
 		int height = img.getHeight();
@@ -307,5 +307,4 @@ public class ImageDisplay {
 		ImageDisplay ren = new ImageDisplay();
 		ren.showIms(args);
 	}
-
 }

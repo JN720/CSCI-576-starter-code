@@ -11,3 +11,5 @@ ImageDisplay_C++_cross_platform/build
 *.class
 
 data*
+
+modified-*.png
