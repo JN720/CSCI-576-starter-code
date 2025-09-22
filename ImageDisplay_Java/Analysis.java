@@ -4,7 +4,7 @@ import javax.imageio.ImageIO;
 
 public class Analysis {
     
-    private static double calculateMSE(BufferedImage original, BufferedImage modified) {
+    private static double calculateMAE(BufferedImage original, BufferedImage modified) {
         double sum = 0;
         int width = original.getWidth();
         int height = original.getHeight();
@@ -22,10 +22,10 @@ public class Analysis {
                 int differenceR = originalR - modifiedR;
                 int differenceG = originalG - modifiedG;
                 int differenceB = originalB - modifiedB;
-                sum += (differenceR * differenceR) + (differenceG * differenceG) + (differenceB * differenceB);
+                sum += Math.abs(differenceR) + Math.abs(differenceG) + Math.abs(differenceB);
             }
         }
-
+        sum /= 255;
         return sum;
     }
     public static void main(String args[]) {
@@ -53,7 +53,7 @@ public class Analysis {
                         int q3 = N - q1 - q2;
                         String modifyArgs[] = {"", String.valueOf(C), String.valueOf(M), String.valueOf(q1), String.valueOf(q2), String.valueOf(q3)};
                         BufferedImage modified = imageDisplay.modifyImage(original, modifyArgs);
-                        double error = calculateMSE(original, modified);
+                        double error = calculateMAE(original, modified);
                         System.out.println("<"+C+" "+M+" "+q1+" "+q2+" "+q3+"> "+error);
                         if (N == 4) {
                             File outputfile = new File("images/modified-"+C+"-"+M+"-"+q1+"-"+q2+"-"+q3+".png");
