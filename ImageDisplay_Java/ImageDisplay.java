@@ -18,8 +18,8 @@ public class ImageDisplay {
 
 	// Modify the height and width values here to read and display an image with
   	// different dimensions. 
-	int width = 512;
-	int height = 512;
+	int width = 288;
+	int height = 352;
 
 	/** Read Image RGB
 	 *  Reads the image of given width and height at the given imgPath into the provided BufferedImage.
@@ -41,13 +41,14 @@ public class ImageDisplay {
 			raf.read(bytes);
 
 			int ind = 0;
-			for(int y = 0; y < height; y++)
+			int size = height * width;
+			for(int x = 0; x < width; x++)
 			{
-				for(int x = 0; x < width; x++)
+				for(int y = 0; y < height; y++)
 				{
 					byte r = bytes[ind];
-					byte g = bytes[ind+height*width];
-					byte b = bytes[ind+height*width*2]; 
+					byte g = bytes[ind+size];
+					byte b = bytes[ind+(size * 2)]; 
 
 					int pix = 0xff000000 | ((r & 0xff) << 16) | ((g & 0xff) << 8) | (b & 0xff);
 					//int pix = ((a << 24) + (r << 16) + (g << 8) + b);
@@ -207,7 +208,7 @@ public class ImageDisplay {
 			bits[2] = Integer.parseInt(args[5]);
 		}
 
-		BufferedImage image = new BufferedImage(height, width, BufferedImage.TYPE_INT_RGB);
+		BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 
 		KMeansQuantizer optimizedQuantizer = new KMeansQuantizer(this);
 		for (int y = 0; y < height; y++)

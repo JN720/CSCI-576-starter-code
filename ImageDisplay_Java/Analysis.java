@@ -31,16 +31,21 @@ public class Analysis {
     public static void main(String args[]) {
         ImageDisplay imageDisplay = new ImageDisplay();
 
-        int height = 512;
-        int width = 512;
+        int height = 352;
+        int width = 288;
+
+        if (args.length < 2) {
+            System.out.println("Image path is required");
+            System.exit(1);
+        }
 
         System.out.println(args[0]);
         System.out.println(args[1]);
         int N = Integer.parseInt(args[0]);
         String fileName = args[1];
 
-		BufferedImage original = new BufferedImage(height, width, BufferedImage.TYPE_INT_RGB);
-        imageDisplay.readImageRGB(512, 512, fileName, original);
+		BufferedImage original = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        imageDisplay.readImageRGB(width, height, fileName, original);
         for (int C = 1; C < 3; C++) {
             for (int M = 1; M < 3; M++) {
                 for (int q1 = 1; q1 <= N - 2; q1++) {
